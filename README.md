@@ -22,9 +22,9 @@ This is the configuration for ITC'99 B01 (`b01_15nm.tcl`):
 ```tcl
 set_operation chain
 set_liberty /app/Tech/Syn_libraries/15nm/CCS/NanGate_15nm_OCL_typical_conditional_ccs.lib
-read_verilog 15nm/synthesis/b0 synth.v
-set_output_name 15nm/scan/b0 chain.v
-set_work_dir 15nm/scan
+read_verilog b01_15nm.synth.v
+set_output_name b01_15nm.scan.v
+set_work_dir log
 set_clock clk
 ```
 
@@ -49,4 +49,3 @@ Per the Nangate license terms, these specific files are provided for **non-comme
 Verification and benchmarking were performed using the **IHP Open Source PDK (130nm SG13G2)**, developed by IHP GmbH. 
 
 * **License:** The IHP Open PDK files (located in `Tech/130nm/lib` or linked as a submodule) are licensed under the **Apache License 2.0**, permitting both academic and commercial use.
-*

@@ -2,7 +2,7 @@
 #
 # Authors:
 # - Gabriele Belli  - gabriele.belli [at] studenti.polito.it or gb210403 [at] gmail.com
-# - Filippo Carlone  - nome.cognome [at] studenti.polito.it or carlonefilippomm [at] gmail.com
+# - Filippo Carlone  - filippo.carlone [at] studenti.polito.it or carlonefilippomm [at] gmail.com
 # - Josie Esteban Rodriguez Condia  - josie.rodriguez [at] polito.it
 # - Riccardo Cantoro  - riccardo.cantoro [at] polito.it
 # - Matteo Sonza Reorda  - matteo.sonzareorda [at] polito.it

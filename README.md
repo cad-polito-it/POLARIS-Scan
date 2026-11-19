@@ -1,4 +1,7 @@
 # Polaris-Scan v.0.1
+<p align="center">
+  <img src="polarisscan.png" alt="Polaris icon" width="500">
+</p>
 
 This guide provides the basic instructions to build, configure, and run the tool.
 

@@ -123,9 +123,8 @@ def parse_tcl(filename):
 
             try:
                 tokens = shlex.split(line)
-            except ValueError:
-                log.error("There is a problem with the value in the TCL file.")
-                continue
+            except ValueError as e:
+                raise ValueError(f"Syntax error in TCL file at line '{line}': {e}")
 
             if not tokens:
                 continue
@@ -141,39 +140,29 @@ def parse_tcl(filename):
     # Verifica operazioni
     operations = configuration['operations']
     if not operations:
-        log.error("you need to use the set_operation command in the TCL file")
-        sys.exit(1)
+        raise ValueError("You need to specify operations via 'set_operation' in the TCL file.")
 
     for op in operations:
         if op not in STAGES:
-            log.error(f"This operation {op} is not supported. Only 'chain' is allowed.")
-            sys.exit(1)
+            raise ValueError(f"Operation '{op}' is not supported. Only 'chain' is allowed.")
 
     # Controlli specifici ed esclusivi per la fase 'chain'
     if configuration['verilog_file'] is None:
-        log.error("when the operation is CHAIN you should provide a verilog file through read_verilog")
-        sys.exit(1)
+        raise ValueError("When the operation is CHAIN you must provide a verilog file through 'read_verilog'.")
     if configuration['clock'] is None:
-        log.error("when the operation is CHAIN you should provide a clock name that is not None through set_clock (without using set_clock, 'clk' is the standard name)")
-        sys.exit(1)
+        raise ValueError("When the operation is CHAIN you must provide a valid clock name through 'set_clock'.")
     if configuration['sin'] is None:
-        log.error("when the operation is CHAIN you should provide a sin name that is not None through set_sin (without using set_sin, 'sin' is the standard name)")
-        sys.exit(1)
+        raise ValueError("When the operation is CHAIN you must provide a valid scan-in name through 'set_sin'.")
     if configuration['sout'] is None:
-        log.error("when the operation is CHAIN you should provide a sout name that is not None through set_sout (without using set_sout, 'sout' is the standard name)")
-        sys.exit(1)
+        raise ValueError("When the operation is CHAIN you must provide a valid scan-out name through 'set_sout'.")
     if configuration['shift'] is None:
-        log.error("when the operation is CHAIN you should provide a shift name that is not None through set_shift (without using set_shift, 'shift' is the standard name)")
-        sys.exit(1)
+        raise ValueError("When the operation is CHAIN you must provide a valid shift name through 'set_shift'.")
     if configuration['tck'] is None:
-        log.error("when the operation is CHAIN you should provide a tck name that is not None through set_tck (without using set_tck, 'tck' is the standard name)")
-        sys.exit(1)
+        raise ValueError("When the operation is CHAIN you must provide a valid tck name through 'set_tck'.")
     if configuration['test'] is None:
-        log.error("when the operation is CHAIN you should provide a test name that is not None through set_test (without using set_test, 'test' is the standard name)")
-        sys.exit(1)
+        raise ValueError("When the operation is CHAIN you must provide a valid test name through 'set_test'.")
     if configuration['n_chains'] is None:
-        log.error("when the operation is CHAIN you should provide a n_chains name that is not None through set_n_chains (without using set_n_chains, the chain will be one)")
-        sys.exit(1)
+        raise ValueError("When the operation is CHAIN you must provide a valid n_chains through 'set_n_chains'.")
     if configuration['output_name'] is None:
         if configuration['verilog_file'] is not None:
             v = configuration['verilog_file']
@@ -184,11 +173,9 @@ def parse_tcl(filename):
             else:
                 configuration['output_name'] = v + ".scan.v"
         else:
-            log.error("when the operation is CHAIN you should provide an output name that is not None through set_output_name")
-            sys.exit(1)
+            raise ValueError("When the operation is CHAIN you must provide an output name through 'set_output_name'.")
     if configuration['liberty_file'] is None:
-        log.error("when the operation is CHAIN you should provide the liberty_file")
-        sys.exit(1)
+        raise ValueError("When the operation is CHAIN you must provide a liberty file through 'set_liberty'.")
 
     if configuration['n_chains'] < 1:
         raise ValueError("set_n_chains must be >= 1")

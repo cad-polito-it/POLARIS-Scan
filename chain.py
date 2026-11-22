@@ -61,7 +61,7 @@ import json
 import sys
 from pathlib import Path
 from pyosys import libyosys as ys
-from lib2flipflop import dff_families, mux_by_lib
+from lib2flipflop import dff_families, mux_by_lib, load
 from constants import *
 import logging
 from profiling import profiled
@@ -182,16 +182,36 @@ def chain_scan(verilog_input, clk_name, chain_output, liberty_path=None,
     #   find the FFs (same families as the cut) and detect the library
     ffs = []
     lib = None
+    chained_cells = set()
     for cell in list(module.cells_.values()):
         cell_type = cell.type.str().lstrip("\\")
         for fam, clk_pin, d_pin, q_pin, fam_lib in DFF_FAMILIES:
             if fam in cell_type:
                 ffs.append((cell, clk_pin, d_pin, q_pin))
+                chained_cells.add(cell)
                 if lib is None:
                     lib = fam_lib
                 elif lib != fam_lib:
                     log.warning(f"mixed FF libraries in the netlist: {lib} vs {fam_lib}")
                 break
+
+    # check for excluded / un-scanned sequential cells (e.g. falling edge, latches, complex FFs)
+    all_seq_cells = {e['cell'] for e in load(liberty_path).get('sequential', [])}
+    ignored_seq = []
+    for cell in list(module.cells_.values()):
+        cell_type = cell.type.str().lstrip("\\")
+        if cell_type in all_seq_cells and cell not in chained_cells:
+            ignored_seq.append((cell.name.str().lstrip("\\"), cell_type))
+
+    if ignored_seq:
+        log.warning(
+            f"{len(ignored_seq)} sequential cell(s) in top module were NOT included in the scan chain "
+            f"(falling-edge, latch, or complex sequential cells):"
+        )
+        for cname, ctype in ignored_seq[:10]:
+            log.warning(f"   Cell '{cname}' of type '{ctype}' excluded from scan")
+        if len(ignored_seq) > 10:
+            log.warning(f"   ... and {len(ignored_seq) - 10} more.")
 
     if not ffs:
         from collections import Counter

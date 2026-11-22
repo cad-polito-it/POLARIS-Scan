@@ -31,7 +31,7 @@
 
 #from pathlib import Path
 polaris_scan_report = "polaris_scan.rpt"
-version = "0. 0"
+version = "0.1.0"
 
 # ROOT = Path(__file__).resolve().parent.parent
 # TECH_MAP = {

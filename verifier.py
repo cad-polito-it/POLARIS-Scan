@@ -36,6 +36,7 @@ import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional
+from profiling import profiled
 
 
 @dataclass
@@ -309,6 +310,7 @@ def generate_cpp_harness(
     Path(out_cpp_path).write_text("\n".join(code), encoding="utf-8")
 
 
+@profiled("verify")
 def run_verification(
     scan_verilog: str,
     liberty_file: str,

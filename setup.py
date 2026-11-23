@@ -33,7 +33,7 @@ from setuptools import setup
 setup(
     name="polaris-scan",
     version="0.1.0",
-    py_modules=["polaris", "chain", "constants", "log", "lib2flipflop", "parser", "profiling"],
+    py_modules=["polaris", "chain", "constants", "log", "lib2flipflop", "parser", "profiling", "verifier"],
     entry_points={
         "console_scripts": [
             "polaris=polaris:main",

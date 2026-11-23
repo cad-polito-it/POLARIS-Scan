@@ -37,6 +37,7 @@ from pathlib import Path
 from parser import parse_tcl
 
 from chain import chain_scan
+from verifier import run_verification
 
 from profiling import PROFILER
 
@@ -77,6 +78,20 @@ def main():
                                tck_name = configuration['tck'],
                                test_name = configuration['test'],
                                n_chains = configuration['n_chains'])
+
+        verif_res = run_verification(
+            scan_verilog=configuration['output_name'],
+            liberty_file=configuration['liberty_file'],
+            work_dir=configuration['work_dir'],
+            clk_name=configuration['clock'],
+            tck_name=configuration['tck'],
+            test_name=configuration['test'],
+            shift_name=configuration['shift'],
+        )
+
+        if not verif_res.passed:
+            log.error("Automatic scan verification FAILED! Inspect the log for failure details.")
+            sys.exit(1)
         
     except (RuntimeError, FileNotFoundError, ValueError) as e:
         log.error(e)

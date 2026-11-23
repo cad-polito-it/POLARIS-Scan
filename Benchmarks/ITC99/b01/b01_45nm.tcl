@@ -2,6 +2,7 @@
 # usage: polaris b01_45nm.tcl
 set_operation chain
 set_liberty /app/Tech/Syn_libraries/45nm/lib/NangateOpenCellLibrary_typical.lib
-read_verilog b0_synth.v
-set_output_name b0_chain.v
+read_verilog b01_45nm.synth.v
+set_output_name b01_45nm.scan.v
+set_work_dir log
 set_clock clk

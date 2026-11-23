@@ -66,3 +66,4 @@ clean_polaris_objects:
 	find -type f -name "*.scan.v" -delete
 	find -type f -name "*chain.v" -delete
 	find -type f -name "*.rpt" -delete
+	find -type d -name "verilator_obj" -exec rm -rf {} + 2>/dev/null || true

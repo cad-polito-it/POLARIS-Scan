@@ -74,3 +74,5 @@ report.txt
 *.log
 /log
 ./__pycache__/
+**/verilator_obj/
+**/log/
